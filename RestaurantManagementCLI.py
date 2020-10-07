@@ -1,28 +1,29 @@
 import User
+import Admin
 
-def addNewIngredient():
-    pass
+def doAddNewIngredient():
+    Admin.addNewIngredient()
 
-def updateIngredient():
-    pass
+def doUpdateIngredientPrice():
+    Admin.updateIngredientPrice()
 
-def printIngredientList():
-    pass
+def doPrintIngredientList():
+    Admin.getIngredientList()
 
-def addNewDish():
-    pass
+def doAddNewDish():
+    Admin.addNewDish()
 
-def updateDishIngredients():
-    pass
+def doUpdateDishIngredients():
+    Admin.updateDishIngredients()
 
-def updateDishPrice():
-    pass
+def doUpdateDishPrice():
+    Admin.updateDishPrice()
 
-def printDishMenu():
-    pass
+def doPrintDishMenu():
+    Admin.getDishMenu()
 
-def exportBillData():
-    pass
+def doExportBillData():
+    Admin.exportBillData()
 
 def adminMenu():
     while True:
@@ -38,36 +39,36 @@ def adminMenu():
 
         choice = int(input("Enter Choice (0 to go back): "))
         if choice == 1:
-            addNewIngredient()
+            doAddNewIngredient()
         elif choice == 2:
-            updateIngredient()
+            doUpdateIngredientPrice()
         elif choice == 3:
-            printIngredientList()
+            doPrintIngredientList()
         elif choice == 4:
-            addNewDish()
+            doAddNewDish()
         elif choice == 5:
-            updateDishIngredients()
+            doUpdateDishIngredients()
         elif choice == 6:
-            updateDishPrice()
+            doUpdateDishPrice()
         elif choice == 7:
-            printDishMenu()
+            doPrintDishMenu()
         elif choice == 8:
-            exportBillData()
+            doExportBillData()
         elif choice == 0:
             break
         else:
-            print("Invalid Choice!")
+            print("(!)Invalid Choice")
 
 def userMenu():
     inputList = dict()
     while True:
         print("\n=================================================")
-        print("1. Enter Bill Item")
+        print("1. Add Bill Item")
         print("2. Process Bill")
         choice = int(input("Enter Choice: (0 to end day & save): "))
 
         if choice == 1:
-            print("Enter Food ID and Amount:")
+            print("Enter Dish ID and Quantity:")
             dishId       = int(input())
             dishQuantity = int(input())
             if User.checkAvailability(dishId, dishQuantity) == True:
