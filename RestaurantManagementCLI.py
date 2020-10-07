@@ -1,16 +1,4 @@
-from DataIO import *
-from Orders import *
-
-def checkAvailability(foodId, foodAmount):
-    return True
-
-def generateBill(inputList):
-    print(inputList)
-    pass
-
-def endDay():
-    print("The End\n")
-    pass
+import User
 
 def addNewIngredient():
     pass
@@ -36,7 +24,7 @@ def printDishMenu():
 def exportBillData():
     pass
 
-def admin():
+def adminMenu():
     while True:
         print("\n=================================================")
         print("1. Add new Ingredient")
@@ -70,52 +58,53 @@ def admin():
         else:
             print("Invalid Choice!")
 
-def user():
+def userMenu():
     inputList = dict()
     while True:
         print("\n=================================================")
-        print("1: Enter items in the Bill\n2: Process Bill\n0: End the day and exit\n")
-        choice = int(input())
+        print("1. Enter Bill Item")
+        print("2. Process Bill")
+        choice = int(input("Enter Choice: (0 to end day & save): "))
 
-        if(choice == 1):
+        if choice == 1:
             print("Enter Food ID and Amount:")
-            foodId     = int(input())
-            foodAmount = int(input())
-            if(checkAvailability(foodId, foodAmount) == True):
-                inputList[foodId] = foodAmount
+            dishId       = int(input())
+            dishQuantity = int(input())
+            if User.checkAvailability(dishId, dishQuantity) == True:
+                inputList[dishId] = dishQuantity
             else:
                 print("(!)Insufficient ingredients")
 
-        elif(choice == 2):
-            generateBill(inputList)
+        elif choice == 2:
+            User.generateBill(inputList)
             inputList.clear()
             print("Bill succesfully processed")
 
-        elif(choice == 0):
-            dayendchoice = input("Are you sure? (y/n): ")
-            if(dayendchoice == "y"):
-                endDay()
+        elif choice == 0:
+            dayEndChoice = input("Are you sure? (y/n): ")
+            if dayEndChoice == "y" or dayEndChoice == "Y":
+                User.endDay()
                 break
         else:
-            print("Invalid Choice")
+            print("(!)Invalid Choice")
 
 def main():
     while True:
-        print("=================================================")
-        print("\nRestaurant Management System v0.1")
+        print("\n=================================================")
+        print("Restaurant Management System v0.1")
         print("=================================================")
         print("1. Admin")
         print("2. User")
 
         choice = int(input("Enter Choice (0 to exit): "))
         if choice == 1:
-            admin()
+            adminMenu()
         elif choice == 2:
-            user()
+            userMenu()
         elif choice == 0:
             exit()
         else:
-            print("Invalid Choice!")
+            print("(!)Invalid Choice")
 
 if __name__ == "__main__":
     main()
