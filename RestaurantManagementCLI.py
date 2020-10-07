@@ -9,19 +9,19 @@ def user():
 
 def main():
     while True:
-        choice = 0
         print("\nRestaurant Management System v0.1")
         print("=================================================")
         print("1. Admin")
         print("2. User")
-        print("Enter Choice (0 to exit): ")
+
+        choice = int(input("Enter Choice (0 to exit): "))
         if choice == 1:
             admin()
         elif choice == 2:
             user()
         elif choice == 0:
             exit()
-        else
+        else:
             print("Invalid Choice!")
  
 if __name__ == "__main__":
