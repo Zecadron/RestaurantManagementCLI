@@ -11,8 +11,64 @@ def generateBill(inputList):
 def endDay():
     print("The End\n")
     pass
-def admin():
+
+def addNewIngredient():
     pass
+
+def updateIngredient():
+    pass
+
+def printIngredientList():
+    pass
+
+def addNewDish():
+    pass
+
+def updateDishIngredients():
+    pass
+
+def updateDishPrice():
+    pass
+
+def printDishMenu():
+    pass
+
+def exportBillData():
+    pass
+
+def admin():
+    while True:
+        print("\n=================================================")
+        print("1. Add new Ingredient")
+        print("2. Update Ingredient Price")
+        print("3. Print Ingredient List")
+        print("4. Add new Dish")
+        print("5. Update Dish Ingredients")
+        print("6. Update Dish Price")
+        print("7. Print Dish Menu")
+        print("8. Export Bill Data")
+
+        choice = int(input("Enter Choice (0 to go back): "))
+        if choice == 1:
+            addNewIngredient()
+        elif choice == 2:
+            updateIngredient()
+        elif choice == 3:
+            printIngredientList()
+        elif choice == 4:
+            addNewDish()
+        elif choice == 5:
+            updateDishIngredients()
+        elif choice == 6:
+            updateDishPrice()
+        elif choice == 7:
+            printDishMenu()
+        elif choice == 8:
+            exportBillData()
+        elif choice == 0:
+            break
+        else:
+            print("Invalid Choice!")
 
 def user():
     inputList = dict()
@@ -42,7 +98,6 @@ def user():
                 break
         else:
             print("Invalid Choice")
-    pass
 
 def main():
     while True:
