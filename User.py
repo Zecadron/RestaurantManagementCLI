@@ -1,34 +1,32 @@
 from DatabaseAPI import *
 
-DishIngredients = DishIngredients()
-Ingredients = Ingredients()
-Dishes = Dishes()
-BillDishes = BillDishes()
-Bill = Bill()
+dishIngredients = DishIngredients()
+ingredients = Ingredients()
+dishes = Dishes()
+billDishes = BillDishes()
+bill = Bill()
 
 def checkAvailability(dishId, dishQuantity):
-    consumedIngredientsId = DishIngredients.getIngredientIds(dishId)
-    for ingId in consumedIngredientsId:
-        if DishIngredients.getQuantity(dishId,x)*dishQuantity > Ingredients.getStock():
+    consumedIngredientIds = dishIngredients.getIngredientIds(dishId)
+    for ingId in consumedIngredientIds:
+        if dishIngredients.getQuantity(dishId, x) * dishQuantity > ingredients.getStock():
             return False
     return True
 
 def deductIngredients(dishId, dishQuantity):
-    consumedIngredientsId = DishIngredients.getIngredientIds(dishId)
-    for ingId in consumedIngredientsId:
-        consumedStock = DishIngredients.getQuantity(dishId, ingId) * dishQuantity
-        newStock = Ingredients.getStock(ingId) - consumedStock
-        Ingredients.setStock(ingId,newStock)
-    pass
+    consumedIngredientIds = dishIngredients.getIngredientIds(dishId)
+    for ingId in consumedIngredientIds:
+        consumedStock = dishIngredients.getQuantity(dishId, ingId) * dishQuantity
+        newStock = ingredients.getStock(ingId) - consumedStock
+        ingredients.setStock(ingId,newStock)
 
 def generateBill(inputList):
-    Total = 0
+    total = 0
     for dishId in inputList:
-        Total = Total + inputList[dishId]
+        total = total + inputList[dishId]
 
     billText = "Sample Text"
     return billText
 
 def endDay():
     print("The End\n")
-    pass

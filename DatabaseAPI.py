@@ -1,29 +1,33 @@
-class Ingredients():
-    def getStock(ingId):
+class Ingredients:
+    def getStock(self, ingId):
         pass
-    def getAverage(ingId):
+    def getAverage(self, ingId):
         pass
-    def getPrice(ingId):
+    def getPrice(self, ingId):
         pass
-    def getIngredientName(ingId):
+    def getIngredientName(self, ingId):
         pass
-class DishIngredients():
-    def getIngredientIds(dishId): #Gives list with all ingId associated with dishId
+
+class DishIngredients:
+    def getIngredientIds(self, dishId): #Gives list with all ingId associated with dishId
+        return []
+    def getQuantity(self, dishId, ingId):
         pass
-    def getQuantity(dishId, Ing_Id):
+
+class Dishes:
+    def getDishName(self, dishId):
         pass
-class Dishes():
-    def getDishName(dishId):
+    def getPrice(self, dishId):
         pass
-    def getPrice(dishId):
+
+class BillDishes:
+    def getDishIds(self, billId): #Gives a list with all dishId associated with billId
         pass
-class BillDishes():
-    def getDishIds(billId): #Gives a list with all dishId associated with billId
+    def getQuantity(self, billId, dishId):
         pass
-    def getQuantity(billId,dishId):
+
+class Bill:
+    def getDate(self, billId):
         pass
-class Bill():
-    def getDate(billId):
-        pass
-    def getTotal(billId):
+    def getTotal(self, billId):
         pass
