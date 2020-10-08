@@ -1,24 +1,20 @@
 from DatabaseAPI import *
 
-dishIngredients = DishIngredients()
-ingredients = Ingredients()
-dishes = Dishes()
-billDishes = BillDishes()
-bill = Bill()
+db = Database.getInstance()
 
 def checkAvailability(dishId, dishQuantity):
-    consumedIngredientIds = dishIngredients.getIngredientIds(dishId)
+    consumedIngredientIds = db.dishIngredients.getIngredientIds(dishId)
     for ingId in consumedIngredientIds:
-        if dishIngredients.getQuantity(dishId, x) * dishQuantity > ingredients.getStock():
+        if db.dishIngredients.getQuantity(dishId, x) * dishQuantity > db.ingredients.getStock():
             return False
     return True
 
 def deductIngredients(dishId, dishQuantity):
-    consumedIngredientIds = dishIngredients.getIngredientIds(dishId)
+    consumedIngredientIds = db.dishIngredients.getIngredientIds(dishId)
     for ingId in consumedIngredientIds:
-        consumedStock = dishIngredients.getQuantity(dishId, ingId) * dishQuantity
-        newStock = ingredients.getStock(ingId) - consumedStock
-        ingredients.setStock(ingId,newStock)
+        consumedStock = db.dishIngredients.getQuantity(dishId, ingId) * dishQuantity
+        newStock = db.ingredients.getStock(ingId) - consumedStock
+        db.ingredients.setStock(ingId,newStock)
 
 def generateBill(inputList):
     total = 0

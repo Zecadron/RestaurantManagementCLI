@@ -1,3 +1,7 @@
+from DatabaseAPI import *
+
+db = Database.getInstance()
+
 def addNewIngredient():
     pass
 
