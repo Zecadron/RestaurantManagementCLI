@@ -77,8 +77,15 @@ def userMenu():
                 print("(!)Insufficient ingredients")
 
         elif choice == 2:
-            User.generateBill(inputList)
-            inputList.clear()
+            print(inputList)
+            confirmBill = input("Confirm? (y/n): ")
+            if confirmBill == "y" or confirmBill == "Y":
+                print("Bill confirmed")
+                User.generateBill(inputList)
+                inputList.clear()
+            else:
+                inputList.clear()
+                print("Deleted current bill")
             print("Bill succesfully processed")
 
         elif choice == 0:

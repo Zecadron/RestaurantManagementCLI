@@ -1,13 +1,19 @@
-def checkAvailability(foodId, foodAmount):
+from DatabaseAPI import *
+
+DishIngredients = DishIngredients()
+Ingredients = Ingredients()
+Dishes = Dishes()
+BillDishes = BillDishes()
+Bill = Bill()
+
+def checkAvailability(dishId, dishQuantity):
+    consumedIngredientsId = DishIngredients.getIngredientIds(dishId)
+    for x in consumedIngredientsId:
+        if DishIngredients.getQuantity(dishId,x)*dishQuantity > Ingredients.getStock():
+            return False
     return True
 
 def generateBill(inputList):
-    print(inputList)
-    confirmBill = input("Confirm? (y/n): ")
-    if confirmBill == "y" or confirmBill == "Y":
-        print("Bill confirmed")
-    else:
-        print("Deleted current bill")
     pass
 
 def endDay():
