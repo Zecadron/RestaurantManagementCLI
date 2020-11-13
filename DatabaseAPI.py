@@ -11,6 +11,10 @@ TAB_BILL_DISHES         = "BillDishes"
 TAB_BILLS               = "Bills"
 TAB_PERSISTENT_DATA     = "PersistentData"
 
+# Used for auto increment primary keys
+# DO NOT CHANGE ITS VALUE!
+COL_AUTO                = "auto"
+
 class Ingredients:
     COL_ID          = "IngID"
     COL_NAME        = "IngName"
@@ -34,14 +38,34 @@ class Ingredients:
     def __init__(self, db):
         self.db = db
 
+    def getId(self, name):
+        return self.db.select(TAB_INGREDIENTS,
+                self.COL_ID, (self.COL_NAME,), (name,))[name]
+
     def getStock(self, ingId):
-        pass
+        return self.db.select(TAB_INGREDIENTS,
+                self.COL_STOCK, (self.COL_ID,), (ingId,))[ingId]
+
     def getAverage(self, ingId):
-        pass
+        return self.db.select(TAB_INGREDIENTS,
+                self.COL_USED_AVG, (self.COL_ID,), (ingId,))[ingId]
+
     def getPrice(self, ingId):
-        pass
-    def getIngredientName(self, ingId):
-        pass
+        return self.db.select(TAB_INGREDIENTS,
+                self.COL_PRICE, (self.COL_ID,), (ingId,))[ingId]
+
+    def getName(self, ingId):
+        return self.db.select(TAB_INGREDIENTS,
+                self.COL_NAME, (self.COL_ID,), (ingId,))[ingId]
+
+    def getNamesByIds(self):
+        return self.db.select(TAB_INGREDIENTS, self.COL_NAME, (self.COL_ID,))
+
+    def addIngredient(self, name, price, stock):
+        self.db.insert(TAB_INGREDIENTS, (COL_AUTO, name, price, stock, 0, 0, 0, 0))
+
+    def setPrice(self, ingId, price):
+        self.db.update(TAB_INGREDIENTS, self.COL_PRICE, price, self.COL_ID, ingId)
 
 class Dishes:
     COL_ID      = "DishID"
@@ -56,10 +80,29 @@ class Dishes:
     def __init__(self, db):
         self.db = db
 
-    def getDishName(self, dishId):
-        pass
+    def getId(self, name):
+        return self.db.select(TAB_DISHES,
+                self.COL_ID, (self.COL_NAME,), (name,))[name]
+
+    def getName(self, dishId):
+        return self.db.select(TAB_DISHES,
+                self.COL_NAME, (self.COL_ID,), (dishId,))[dishId]
+
     def getPrice(self, dishId):
-        pass
+        return self.db.select(TAB_DISHES,
+                self.COL_PRICE, (self.COL_ID,), (dishId,))[dishId]
+
+    def getPricesByIds(self):
+        return self.db.select(TAB_DISHES, self.COL_PRICE, (self.COL_ID,))
+
+    def getNamesByIds(self):
+        return self.db.select(TAB_DISHES, self.COL_NAME, (self.COL_ID,))
+
+    def setPrice(self, dishId, price):
+        self.db.update(TAB_DISHES, self.COL_PRICE, price, self.COL_ID, dishId)
+
+    def addDish(self, name, price):
+        self.db.insert(TAB_DISHES, (COL_AUTO, name, price))
 
 class Bills:
     COL_ID      = "BillID"
@@ -75,9 +118,12 @@ class Bills:
         self.db = db
 
     def getDate(self, billId):
-        pass
+        return self.db.select(TAB_BILLS,
+                self.COL_DATE, (self.COL_ID,), (billId,))[billId]
+
     def getTotal(self, billId):
-        pass
+        return self.db.select(TAB_BILLS,
+                self.COL_TOTAL, (self.COL_ID,), (billId,))[billId]
 
 class DishIngredients:
     COL_QTY     = "Quantity"
@@ -93,10 +139,19 @@ class DishIngredients:
     def __init__(self, db):
         self.db = db
 
-    def getIngredientIds(self, dishId): #Gives list with all ingId associated with dishId
-        return []
+    def getIngredientIds(self, dishId): 
+        return self.db.select(TAB_DISH_INGREDIENTS,
+                Ingredients.COL_ID, (Dishes.COL_ID,), (dishId,))[dishId]
+
     def getQuantity(self, dishId, ingId):
-        pass
+        return self.db.select(TAB_DISH_INGREDIENTS, self.COL_QTY,
+                (Dishes.COL_ID, Ingredients.COL_ID), (dishId, ingId))[dishId]
+
+    def addDishIngredient(self, dishId, ingId, ingQty):
+        self.db.insert(TAB_DISH_INGREDIENTS, (dishId, ingId, ingQty))
+
+    def deleteDishIngredients(self, dishId):
+        self.db.delete(TAB_DISH_INGREDIENTS, Dishes.COL_ID, dishId)
 
 class BillDishes:
     COL_QTY     = "Quantity"
@@ -112,10 +167,13 @@ class BillDishes:
     def __init__(self, db):
         self.db = db
 
-    def getDishIds(self, billId): #Gives a list with all dishId associated with billId
-        pass
+    def getDishIds(self, billId):
+        return self.db.select(TAB_BILL_DISHES,
+                Dishes.COL_ID, (Bills.COL_ID,), (billId,))[billId]
+
     def getQuantity(self, billId, dishId):
-        pass
+        return self.db.select(TAB_BILL_DISHES, self.COL_QTY,
+                (Bills.COL_ID, Dishes.COL_ID), (billId, dishId))[billId]
 
 class PersistentData:
     COL_ID          = "DataID"
@@ -133,11 +191,14 @@ class PersistentData:
         self.db = db
 
     def getValue(self, key):
-        pass
-    def setValue(self, key):
-        pass
+        return self.db.select(TAB_PERSISTENT_DATA,
+                self.COL_VAL, (self.COL_KEY,), (key,))[key]
+
+    def setValue(self, key, value):
+        self.db.update(TAB_PERSISTENT_DATA, self.COL_VAL, value, self.COL_KEY, key)
+        
     def insertKey(self, key, value):
-        pass
+        self.db.insert(TAB_PERSISTENT_DATA, (COL_AUTO, key, value))
 
 class Database:
     TAB_CREATE_DICT = {

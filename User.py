@@ -5,7 +5,7 @@ db = Database.getInstance()
 def checkAvailability(dishId, dishQuantity):
     consumedIngredientIds = db.dishIngredients.getIngredientIds(dishId)
     for ingId in consumedIngredientIds:
-        if db.dishIngredients.getQuantity(dishId, x) * dishQuantity > db.ingredients.getStock():
+        if db.dishIngredients.getQuantity(dishId, ingId) * dishQuantity > db.ingredients.getStock(ingId):
             return False
     return True
 

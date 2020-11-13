@@ -2,25 +2,52 @@ import User
 import Admin
 
 def doAddNewIngredient():
-    Admin.addNewIngredient()
+    name = input("Enter Ingredient Name: ")
+    price = float(input("Enter Ingredient Price: "))
+    stock = input("Enter Ingredient Stock: ")
+    ingId = Admin.addNewIngredient(name, price, stock)
+    print("Added Ingredient with ID: " + str(ingId))
 
 def doUpdateIngredientPrice():
-    Admin.updateIngredientPrice()
+    ingId = int(input("Enter Ingredient ID: "))
+    price = int(input("Enter new Price: "))
+    Admin.updateIngredientPrice(ingId, price)
+    print("Updated Ingredient Price")
 
 def doPrintIngredientList():
-    Admin.getIngredientList()
+    print(Admin.getIngredientList())
 
 def doAddNewDish():
-    Admin.addNewDish()
+    name = input("Enter Dish Name: ")
+    price = float(input("Enter Dish Price: "))
+    n = int(input("Enter no. of Ingredients: "))
+    ingReq = dict()
+    for i in range(n):
+        ingId = int(input("Ingredient ID #" + str(i) + ": "))
+        ingReq[ingId] = int(input("Ingredient Qty #" + str(i) + ": "))
+
+    dishId = Admin.addNewDish(name, price, ingReq)
+    print("Added Dish with ID: " + str(dishId))
 
 def doUpdateDishIngredients():
-    Admin.updateDishIngredients()
+    dishId = int(input("Enter Dish ID: "))
+    n = int(input("Enter new no. of Ingredients: "))
+    ingReq = dict()
+    for i in range(n):
+        ingId = int(input("Ingredient ID #" + str(i) + ": "))
+        ingReq[ingId] = int(input("Ingredient Qty #" + str(i) + ": "))
+
+    Admin.updateDishIngredients(dishId, ingReq)
+    print("Updated Dish Ingredients")
 
 def doUpdateDishPrice():
-    Admin.updateDishPrice()
+    dishId = int(input("Enter Dish ID: "))
+    price = float(input("Enter new Price: "))
+    Admin.updateDishPrice(dishId, price)
+    print("Updated Dish Price")
 
 def doPrintDishMenu():
-    Admin.getDishMenu()
+    print(Admin.getDishMenu())
 
 def doExportBillData():
     Admin.exportBillData()
@@ -68,9 +95,8 @@ def userMenu():
         choice = int(input("Enter Choice: (0 to end day & save): "))
 
         if choice == 1:
-            print("Enter Dish ID and Quantity:")
-            dishId       = int(input())
-            dishQuantity = int(input())
+            dishId       = int(input("Enter Dish ID: "))
+            dishQuantity = int(input("Enter Dish Qty: "))
             if User.checkAvailability(dishId, dishQuantity) == True:
                 inputList[dishId] = dishQuantity
             else:
