@@ -23,7 +23,7 @@ class Ingredients:
     COL_USED_D1     = "UsedD1"
     COL_USED_D2     = "UsedD2"
     COL_USED_D3     = "UsedD3"
-    COL_USED_AVG    = "UsedAvg" 
+    COL_USED_AVG    = "UsedAvg"
 
     CREATE_TABLE = 'create table ' + TAB_INGREDIENTS + ' (' + \
         COL_ID + ' integer primary key autoincrement, ' + \
@@ -41,6 +41,9 @@ class Ingredients:
     def getId(self, name):
         return self.db.select(TAB_INGREDIENTS,
                 self.COL_ID, (self.COL_NAME,), (name,))[name]
+
+    def getAllId(self):
+        return self.db.select(TAB_INGREDIENTS, self.COL_ID, (self.COL_ID,))
 
     def getStock(self, ingId):
         return self.db.select(TAB_INGREDIENTS,
@@ -60,6 +63,34 @@ class Ingredients:
 
     def getNamesByIds(self):
         return self.db.select(TAB_INGREDIENTS, self.COL_NAME, (self.COL_ID,))
+
+    def getUsedD1(self, ingId):
+        return self.db.select(TAB_INGREDIENTS, self.COL_USED_D1, (self.COL_ID,))[ingId]
+
+    def getUsedD2(self, ingId):
+        return self.db.select(TAB_INGREDIENTS, self.COL_USED_D2, (self.COL_ID,))[ingId]
+
+    def getUsedD3(self, ingId):
+        return self.db.select(TAB_INGREDIENTS, self.COL_USED_D3, (self.COL_ID,))[ingId]
+
+    def getUsedAverage(self, ingId):
+        return self.db.select(TAB_INGREDIENTS, self.COL_USED_AVG, (self.COL_ID,))[ingId]
+
+    def setUsedD1(self, ingId, used_d1):
+        return self.db.update(TAB_INGREDIENTS, self.COL_USED_D1, used_d1,
+                self.COL_ID, ingId)
+
+    def setUsedD2(self, ingId, used_d2):
+        return self.db.update(TAB_INGREDIENTS, self.COL_USED_D2, used_d2,
+                self.COL_ID, ingId)
+
+    def setUsedD3(self, ingId, used_d3):
+        return self.db.update(TAB_INGREDIENTS, self.COL_USED_D3, used_d3,
+                self.COL_ID, ingId)
+
+    def setUsedD3(self, ingId, used_avg):
+        return self.db.update(TAB_INGREDIENTS, self.COL_USED_AVG, used_avg,
+                self.COL_ID, ingId)
 
     def addIngredient(self, name, price, stock):
         self.db.insert(TAB_INGREDIENTS, (COL_AUTO, name, price, stock, 0, 0, 0, 0))
@@ -134,12 +165,12 @@ class DishIngredients:
         Ingredients.COL_ID + ' integer not null references ' \
         + TAB_INGREDIENTS + '(' + Ingredients.COL_ID + '), ' + \
         COL_QTY + ' integer not null, ' + \
-        'primary key (' + Dishes.COL_ID + ',' + Ingredients.COL_ID + '));' 
+        'primary key (' + Dishes.COL_ID + ',' + Ingredients.COL_ID + '));'
 
     def __init__(self, db):
         self.db = db
 
-    def getIngredientIds(self, dishId): 
+    def getIngredientIds(self, dishId):
         return self.db.select(TAB_DISH_INGREDIENTS,
                 Ingredients.COL_ID, (Dishes.COL_ID,), (dishId,))[dishId]
 
@@ -162,7 +193,7 @@ class BillDishes:
         Dishes.COL_ID + ' integer not null references ' \
         + TAB_DISHES + '(' + Dishes.COL_ID + '), ' + \
         COL_QTY + ' integer not null, ' + \
-        'primary key (' + Bills.COL_ID + ',' + Dishes.COL_ID + '));' 
+        'primary key (' + Bills.COL_ID + ',' + Dishes.COL_ID + '));'
 
     def __init__(self, db):
         self.db = db
@@ -196,7 +227,7 @@ class PersistentData:
 
     def setValue(self, key, value):
         self.db.update(TAB_PERSISTENT_DATA, self.COL_VAL, value, self.COL_KEY, key)
-        
+
     def insertKey(self, key, value):
         self.db.insert(TAB_PERSISTENT_DATA, (COL_AUTO, key, value))
 
