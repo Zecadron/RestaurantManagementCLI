@@ -1,0 +1,5 @@
+Date,1,Potato,2.0
+Date,1,Potato,2.0
+Date,1,Potato,2.0
+Date,1,Potato,6.0
+Date,1,Potato,3.0

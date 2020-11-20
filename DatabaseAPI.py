@@ -88,7 +88,7 @@ class Ingredients:
         return self.db.update(TAB_INGREDIENTS, self.COL_USED_D3, used_d3,
                 self.COL_ID, ingId)
 
-    def setUsedD3(self, ingId, used_avg):
+    def setUsedAverage(self, ingId, used_avg):
         return self.db.update(TAB_INGREDIENTS, self.COL_USED_AVG, used_avg,
                 self.COL_ID, ingId)
 
@@ -97,6 +97,10 @@ class Ingredients:
 
     def setPrice(self, ingId, price):
         self.db.update(TAB_INGREDIENTS, self.COL_PRICE, price, self.COL_ID, ingId)
+
+    def setStock(self, ingId, stock):
+        self.db.update(TAB_INGREDIENTS, self.COL_STOCK, stock, self.COL_ID, ingId)
+
 
 class Dishes:
     COL_ID      = "DishID"
@@ -156,6 +160,10 @@ class Bills:
         return self.db.select(TAB_BILLS,
                 self.COL_TOTAL, (self.COL_ID,), (billId,))[billId]
 
+    def addBill(self, billDate, totalAmt): # To be tested
+        values = [0, billDate, totalAmt]
+        self.db.insert(TAB_BILLS, values)
+
 class DishIngredients:
     COL_QTY     = "Quantity"
 
@@ -205,6 +213,10 @@ class BillDishes:
     def getQuantity(self, billId, dishId):
         return self.db.select(TAB_BILL_DISHES, self.COL_QTY,
                 (Bills.COL_ID, Dishes.COL_ID), (billId, dishId))[billId]
+
+    def addBillDishes(self, billId, dishId, qty): # To be tested
+        values = [0, billId, dishId, qty]
+        self.db.insert(TAB_BILL_DISHES, values)
 
 class PersistentData:
     COL_ID          = "DataID"

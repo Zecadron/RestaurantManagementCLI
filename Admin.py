@@ -33,7 +33,30 @@ def getDishMenu():
     menu = []
     for ingId in names:
         menu.append((ingId, names[ingId], prices[ingId]))
-    return menu 
+    return menu
+
+def addIngredientQuantity(ingId, qty):
+    stock = db.ingredients.getStock(ingId)
+    db.ingredients.setStock(ingId, stock + qty)
+
+def canWithdrawCash(cash):
+    if cash < float(db.persistentData.getValue(PersistentData.KEY_CASH)):
+        return True
+    else:
+        return False
+
+def withdrawCash(cash):
+    currentCash = float(db.persistentData.getValue(PersistentData.KEY_CASH))
+    currentCash = currentCash - cash
+    db.persistentData.setValue(PersistentData.KEY_CASH, currentCash)
+
+def depositCash(cash):
+    currentCash = float(db.persistentData.getValue(PersistentData.KEY_CASH))
+    currentCash = currentCash + cash
+    db.persistentData.setValue(PersistentData.KEY_CASH, currentCash)
+
+def getCash():
+    return db.persistentData.getValue(PersistentData.KEY_CASH)
 
 def exportBillData():
     pass

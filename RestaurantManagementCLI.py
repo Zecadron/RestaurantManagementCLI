@@ -52,17 +52,44 @@ def doPrintDishMenu():
 def doExportBillData():
     Admin.exportBillData()
 
+def doAddIngredientQuantity():
+    ingId = int(input("Enter Ingredient ID: "))
+    qty = int(input("Enter Quantity to be Added: "))
+    Admin.addIngredientQuantity(ingId, qty)
+
+def doWithdrawCash():
+    cash = float(input("Enter Amount to Withdraw: "))
+    if Admin.canWithdrawCash(cash) == True:
+        Admin.withdrawCash(cash)
+        print("Succesfully withdrawn Rs. " + str(cash))
+        doGetCash()
+    else:
+        print("(!)Insufficient Cash")
+
+def doDepositCash():
+    cash = float(input("Enter Amount to Deposit: "))
+    Admin.depositCash(cash)
+    print("Succesfully Deposited Rs. " + str(cash))
+    doGetCash()
+
+def doGetCash():
+    print("Available Cash: " + Admin.getCash())
+
 def adminMenu():
     while True:
         print("\n=================================================")
-        print("1. Add new Ingredient")
-        print("2. Update Ingredient Price")
-        print("3. Print Ingredient List")
-        print("4. Add new Dish")
-        print("5. Update Dish Ingredients")
-        print("6. Update Dish Price")
-        print("7. Print Dish Menu")
-        print("8. Export Bill Data")
+        print("1.  Add New Ingredient")
+        print("2.  Update Ingredient Price")
+        print("3.  Print Ingredient List")
+        print("4.  Add new Dish")
+        print("5.  Update Dish Ingredients")
+        print("6.  Update Dish Price")
+        print("7.  Print Dish Menu")
+        print("8.  Export Bill Data")
+        print("9.  Add Ingredient Amount")
+        print("10. Show Available Cash")
+        print("11. Deposit Cash")
+        print("12. Withdraw Cash")
 
         choice = int(input("Enter Choice (0 to go back): "))
         if choice == 1:
@@ -81,6 +108,14 @@ def adminMenu():
             doPrintDishMenu()
         elif choice == 8:
             doExportBillData()
+        elif choice == 9:
+            doAddIngredientQuantity()
+        elif choice == 10:
+            doGetCash()
+        elif choice == 11:
+            doDepositCash()
+        elif choice == 12:
+            doWithdrawCash()
         elif choice == 0:
             break
         else:
@@ -107,7 +142,8 @@ def userMenu():
             confirmBill = input("Confirm? (y/n): ")
             if confirmBill == "y" or confirmBill == "Y":
                 print("Bill confirmed")
-                User.generateBill(inputList)
+                billText = User.generateBill(inputList)
+                print(billText)
                 inputList.clear()
             else:
                 inputList.clear()
