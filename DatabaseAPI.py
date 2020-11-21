@@ -224,6 +224,7 @@ class PersistentData:
     COL_VAL         = "DataVal"
     KEY_CASH        = "Cash"
     KEY_THRESHOLD   = "IngredientThreshold"
+    KEY_CUR_DATE    = "CurrentDate"
 
     CREATE_TABLE = 'create table ' + TAB_PERSISTENT_DATA + ' (' + \
         COL_ID + ' integer primary key autoincrement, ' + \
@@ -232,6 +233,11 @@ class PersistentData:
 
     def __init__(self, db):
         self.db = db
+
+    def keyExists(self, key):
+        ret = self.db.select(TAB_PERSISTENT_DATA,
+                self.COL_VAL, (self.COL_KEY,), (key,))
+        return False if not ret else True
 
     def getValue(self, key):
         return self.db.select(TAB_PERSISTENT_DATA,
@@ -273,3 +279,9 @@ class Database:
             self.bills = Bills(self.db)
             self.persistentData = PersistentData(self.db)
             Database.__instance = self
+
+    def getDateNow(self):
+        return self.db.getDateNow()
+
+    def getDateNext(self, dateString, numDays):
+        return self.db.getDateNext(dateString, numDays)

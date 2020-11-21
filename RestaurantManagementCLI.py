@@ -86,7 +86,7 @@ def adminMenu():
         print("6.  Update Dish Price")
         print("7.  Print Dish Menu")
         print("8.  Export Bill Data")
-        print("9.  Add Ingredient Amount")
+        print("9.  Add Ingredient Quantity")
         print("10. Show Available Cash")
         print("11. Deposit Cash")
         print("12. Withdraw Cash")
@@ -159,8 +159,11 @@ def userMenu():
             print("(!)Invalid Choice")
 
 def main():
+    Admin.initDate()
+
     while True:
-        print("\n=================================================")
+        print("\nDate: " + Admin.getCurDate())
+        print("=================================================")
         print("Restaurant Management System v0.1")
         print("=================================================")
         print("1. Admin")

@@ -58,5 +58,12 @@ def depositCash(cash):
 def getCash():
     return db.persistentData.getValue(PersistentData.KEY_CASH)
 
+def initDate():
+    if not db.persistentData.keyExists(PersistentData.KEY_CUR_DATE):
+        db.persistentData.insertKey(PersistentData.KEY_CUR_DATE, db.getDateNow())
+
+def getCurDate():
+    return db.persistentData.getValue(PersistentData.KEY_CUR_DATE)
+
 def exportBillData():
     pass

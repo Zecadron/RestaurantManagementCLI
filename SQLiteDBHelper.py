@@ -54,8 +54,6 @@ class SQLiteDBHelper:
         else:
             cmd = "insert into " + tableName + \
                     " values (?" + ",?"*(len(values)-1) + ");"
-        print(cmd)
-        print(values)
         self.conn.execute(cmd, values)
         self.conn.commit()
 
@@ -70,3 +68,12 @@ class SQLiteDBHelper:
         cmd = cmd.format(whereColumn)
         self.conn.execute(cmd, (whereVal,))
         self.conn.commit()
+
+    def getDateNow(self):
+        cur = self.conn.execute("select date('now');")
+        return cur.fetchone()[0]
+
+    def getDateNext(self, dateString, numDays):
+        cmd = "select date(\'" + dateString + "\',\'" + str(numDays) + " day\');"
+        cur = self.conn.execute(cmd)
+        return cur.fetchone()[0]
