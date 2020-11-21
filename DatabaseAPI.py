@@ -160,6 +160,11 @@ class Bills:
         return self.db.select(TAB_BILLS,
                 self.COL_TOTAL, (self.COL_ID,), (billId,))[billId]
 
+    def getBillIdsOnDate(self, billDate):
+        idDict = self.db.select(TAB_BILLS,
+                self.COL_ID, (self.COL_DATE,), (billDate,))
+        return idDict[billDate] if idDict else []
+
     def addBill(self, billDate, totalAmt): 
         values = [COL_AUTO, billDate, totalAmt]
         self.db.insert(TAB_BILLS, values)
@@ -211,6 +216,10 @@ class BillDishes:
     def getDishIds(self, billId):
         return self.db.select(TAB_BILL_DISHES,
                 Dishes.COL_ID, (Bills.COL_ID,), (billId,))[billId]
+
+    def getDishQtys(self, billId):
+        return self.db.select(TAB_BILL_DISHES,
+                Dishes.COL_QTY, (Bills.COL_ID,), (billId,))[billId]
 
     def getQuantity(self, billId, dishId):
         return self.db.select(TAB_BILL_DISHES, self.COL_QTY,

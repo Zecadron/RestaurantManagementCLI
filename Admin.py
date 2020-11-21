@@ -39,8 +39,30 @@ def addIngredientQuantity(ingId, qty):
     stock = db.ingredients.getStock(ingId)
     db.ingredients.setStock(ingId, stock + qty)
 
-def addMonthExpense(cash):
-    pass
+def addMonthExpense(amt):
+    curAmt = db.persistentData.getValue(PersistentData.KEY_MONTH_EXPEN)
+    db.persistentData.setValue(PersistentData.KEY_MONTH_EXPEN, curAmt + amt)
+
+def getMonthExpense():
+    return float(db.persistentData.getValue(PersistentData.KEY_MONTH_EXPEN))
+
+def getMonthDishSales():
+    allDishSales = dict()
+    for dishId in db.dishes.getNamesByIds():
+        allDishSales[dishId] = 0
+    yearMonthStr = getCurDate()[:-2]
+    for i in range(1,32):
+        dayStr = ('0' + str(i)) if i < 10 else str(i)
+        dateStr = yearMonthStr + dayStr
+        billIds = db.bills.getBillIdsOnDate(dateStr)
+        if not type(billIds) is list:
+            billIds = [billIds]
+        for billId in billIds:
+            dishIds  = db.billDishes.getDishIds(billId)
+            dishQtys = db.billDishes.getDishQtys(billId)
+            for i in range(len(dishIds)):
+                allDishSales[dishIds[i]] += dishQtys[i]
+    return allDishSales
 
 def canWithdrawCash(cash):
     if cash <= float(db.persistentData.getValue(PersistentData.KEY_CASH)):
@@ -61,12 +83,16 @@ def depositCash(cash):
 def getCash():
     return db.persistentData.getValue(PersistentData.KEY_CASH)
 
-def initDate():
-    if not db.persistentData.keyExists(PersistentData.KEY_CUR_DATE):
-        db.persistentData.insertKey(PersistentData.KEY_CUR_DATE, db.getDateNow())
-
 def getCurDate():
     return db.persistentData.getValue(PersistentData.KEY_CUR_DATE)
+
+def initPersistentData():
+    if not db.persistentData.keyExists(PersistentData.KEY_CUR_DATE):
+        db.persistentData.insertKey(PersistentData.KEY_CUR_DATE, db.getDateNow())
+    if not db.persistentData.keyExists(PersistentData.KEY_MONTH_EXPEN):
+        db.persistentData.insertKey(PersistentData.KEY_MONTH_EXPEN, 0)
+    if not db.persistentData.keyExists(PersistentData.KEY_CASH):
+        db.persistentData.insertKey(PersistentData.KEY_CASH, 0)
 
 def exportBillData():
     pass

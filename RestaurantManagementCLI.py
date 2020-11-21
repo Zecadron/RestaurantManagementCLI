@@ -88,6 +88,24 @@ def doDepositCash():
 def doGetCash():
     print("Available Cash: " + Admin.getCash())
 
+def doPrintMonthlyStats():
+    dishMenu  = Admin.getDishMenu()
+    dishSales = Admin.getMonthDishSales()
+    print("=======================================")
+    print("Dish Name: Sale Quantity: Sale Amount")
+    print("=======================================")
+    totalAmt = 0
+    for entry in dishMenu:
+        dishId, name, price = entry[0], entry[1], entry[2]
+        saleAmt = dishSales[dishId] * price
+        print(name + ": " + str(dishSales[dishId]) + ": " + str(saleAmt))
+        totalAmt += saleAmt
+
+    print("=======================================")
+    print("Total Sale Amount: ", totalAmt)
+    print("Total Expenditure: ", Admin.getMonthExpense())
+    print("Total Profit/Loss: ", totalAmt - Admin.getMonthExpense())
+
 def adminMenu():
     while True:
         print("\n=================================================")
@@ -103,6 +121,7 @@ def adminMenu():
         print("10. Show Available Cash")
         print("11. Deposit Cash")
         print("12. Withdraw Cash")
+        print("13. Print Monthly Statistics")
 
         choice = int(input("Enter Choice (0 to go back): "))
         if choice == 1:
@@ -129,6 +148,8 @@ def adminMenu():
             doDepositCash()
         elif choice == 12:
             doWithdrawCash()
+        elif choice == 13:
+            doPrintMonthlyStats()
         elif choice == 0:
             break
         else:
@@ -140,7 +161,8 @@ def userMenu():
         print("\n=================================================")
         print("1. Add Bill Item")
         print("2. Process Bill")
-        choice = int(input("Enter Choice: (0 to end day & save): "))
+        print("3. End Day and Save")
+        choice = int(input("Enter Choice (0 to go back): "))
 
         if choice == 1:
             dishId       = int(input("Enter Dish ID: "))
@@ -163,16 +185,19 @@ def userMenu():
                 print("Deleted current bill")
             print("Bill succesfully processed")
 
-        elif choice == 0:
+        elif choice == 3:
             dayEndChoice = input("Are you sure? (y/n): ")
             if dayEndChoice == "y" or dayEndChoice == "Y":
                 User.endDay()
-                break
+
+        elif choice == 0:
+            break
+
         else:
             print("(!)Invalid Choice")
 
 def main():
-    Admin.initDate()
+    Admin.initPersistentData()
 
     while True:
         print("\nDate: " + Admin.getCurDate())
