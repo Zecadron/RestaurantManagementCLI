@@ -28,7 +28,6 @@ def deductIngredients(dishId, dishQuantity):
             newStock      = db.ingredients.getStock(ingId) - consumedStock
             db.ingredients.setStock(ingId, newStock)
             db.ingredients.setUsedD3(ingId, db.ingredients.getUsedD3(ingId) + consumedStock)
-    pass
 
 def generateBill(inputList):
     billText = ""
@@ -54,7 +53,6 @@ def orderIngredient(ingId, orderQuantity):
     orderHistory = open("OrderHistory.txt", "a")
     orderHistory.write(orderText)
     orderHistory.close()
-    pass
 
 def endDay():
     for ingId in db.ingredients.getAllId():
@@ -66,11 +64,13 @@ def endDay():
         usedD3 = db.ingredients.getUsedD3(ingId)
         newThreshold = int((usedD1 + usedD2 + usedD3)/3)
         newAverage   = newThreshold * 2
+
         db.ingredients.setUsedD1(ingId, usedD2)
         db.ingredients.setUsedD2(ingId, usedD3)
         db.ingredients.setUsedD3(ingId, 0)
         db.persistentData.setValue(PersistentData.KEY_THRESHOLD, newThreshold)
         db.ingredients.setUsedAverage(ingId, newAverage)
-        curDate = db.persistentData.getValue(PersistentData.KEY_CUR_DATE)
-        newDate = db.getDateNext(curDate, 1)
-        db.persistentData.setValue(PersistentData.KEY_CUR_DATE, newDate)
+
+    curDate = db.persistentData.getValue(PersistentData.KEY_CUR_DATE)
+    newDate = db.getDateNext(curDate, 1)
+    db.persistentData.setValue(PersistentData.KEY_CUR_DATE, newDate)

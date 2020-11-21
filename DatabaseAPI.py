@@ -227,6 +227,7 @@ class PersistentData:
     KEY_CASH        = "Cash"
     KEY_THRESHOLD   = "IngredientThreshold"
     KEY_CUR_DATE    = "CurrentDate"
+    KEY_MONTH_EXPEN = "MonthExpense"
 
     CREATE_TABLE = 'create table ' + TAB_PERSISTENT_DATA + ' (' + \
         COL_ID + ' integer primary key autoincrement, ' + \

@@ -39,8 +39,11 @@ def addIngredientQuantity(ingId, qty):
     stock = db.ingredients.getStock(ingId)
     db.ingredients.setStock(ingId, stock + qty)
 
+def addMonthExpense(cash):
+    pass
+
 def canWithdrawCash(cash):
-    if cash < float(db.persistentData.getValue(PersistentData.KEY_CASH)):
+    if cash <= float(db.persistentData.getValue(PersistentData.KEY_CASH)):
         return True
     else:
         return False

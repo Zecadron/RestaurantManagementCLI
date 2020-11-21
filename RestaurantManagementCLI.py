@@ -52,10 +52,23 @@ def doPrintDishMenu():
 def doExportBillData():
     Admin.exportBillData()
 
-def doAddIngredientQuantity():
-    ingId = int(input("Enter Ingredient ID: "))
-    qty = int(input("Enter Quantity to be Added: "))
-    Admin.addIngredientQuantity(ingId, qty)
+def doGenIngOrderInvoice():
+    n = int(input("Enter new no. of Ingredients: "))
+    for i in range(n):
+        ingId = int(input("Ingredient ID #" + str(i) + ": "))
+        qty   = int(input("Ingredient Qty #" + str(i) + ": "))
+        Admin.addIngredientQuantity(ingId, qty)
+
+    amt = float(input("Enter Total Bill Amount: "))
+    print("Generating Invoice...")
+    Admin.addMonthExpense(amt)
+    if Admin.canWithdrawCash(amt) == True:
+        print("Printing cheque for Rs. " + str(amt) + "...")
+        Admin.withdrawCash(amt)
+        doGetCash()
+    else:
+        print("(!)Insufficient Cash")
+        print("(!)Please write cheque manually")
 
 def doWithdrawCash():
     cash = float(input("Enter Amount to Withdraw: "))
@@ -86,7 +99,7 @@ def adminMenu():
         print("6.  Update Dish Price")
         print("7.  Print Dish Menu")
         print("8.  Export Bill Data")
-        print("9.  Add Ingredient Quantity")
+        print("9.  Generate Ingredient Order Invoice")
         print("10. Show Available Cash")
         print("11. Deposit Cash")
         print("12. Withdraw Cash")
@@ -109,7 +122,7 @@ def adminMenu():
         elif choice == 8:
             doExportBillData()
         elif choice == 9:
-            doAddIngredientQuantity()
+            doGenIngOrderInvoice()
         elif choice == 10:
             doGetCash()
         elif choice == 11:
