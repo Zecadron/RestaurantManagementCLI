@@ -160,9 +160,11 @@ class Bills:
         return self.db.select(TAB_BILLS,
                 self.COL_TOTAL, (self.COL_ID,), (billId,))[billId]
 
-    def addBill(self, billDate, totalAmt): # To be tested
-        values = [0, billDate, totalAmt]
+    def addBill(self, billDate, totalAmt): 
+        values = [COL_AUTO, billDate, totalAmt]
         self.db.insert(TAB_BILLS, values)
+        billIds = self.db.select(TAB_BILLS, self.COL_ID, (self.COL_ID,))
+        return billIds[len(billIds)-1]
 
 class DishIngredients:
     COL_QTY     = "Quantity"
@@ -214,8 +216,8 @@ class BillDishes:
         return self.db.select(TAB_BILL_DISHES, self.COL_QTY,
                 (Bills.COL_ID, Dishes.COL_ID), (billId, dishId))[billId]
 
-    def addBillDishes(self, billId, dishId, qty): # To be tested
-        values = [0, billId, dishId, qty]
+    def addBillDishes(self, billId, dishId, qty):
+        values = [billId, dishId, qty]
         self.db.insert(TAB_BILL_DISHES, values)
 
 class PersistentData:

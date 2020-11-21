@@ -37,16 +37,20 @@ def generateBill(inputList):
         deductIngredients(dishId, inputList[dishId])
         priceDish = db.ingredients.getPrice(dishId) * inputList[dishId]
         total     = total + priceDish
-        billText = billText + db.dishes.getName(dishId) + " : " + str(inputList[dishId]) + " : " + str(priceDish) + "\n"
+        billText = billText + db.dishes.getName(dishId) + " : " + str(int(inputList[dishId])) + " : " + str(priceDish) + "\n"
     billText = billText + "------------------------------\nTotal : " + str(total) + "\n"
+
+    billId = db.bills.addBill(db.persistentData.getValue(PersistentData.KEY_CUR_DATE), total)
+    for dishId in inputList:
+        db.billDishes.addBillDishes(billId, dishId, inputList[dishId])
 
     currentCash = float(db.persistentData.getValue(PersistentData.KEY_CASH))
     db.persistentData.setValue(PersistentData.KEY_CASH, currentCash + total)
     billText = "Dish Name : Quantity : Price\n" + billText
     return billText
 
-def orderIngredient(ingId, orderQuantity): # Implement Date for orderText
-    orderText = "Date" + "," + str(ingId) + "," + db.ingredients.getName(ingId) + "," + str(orderQuantity) + "\n"
+def orderIngredient(ingId, orderQuantity):
+    orderText = db.persistentData.getValue(PersistentData.KEY_CUR_DATE) + "," + str(ingId) + "," + db.ingredients.getName(ingId) + "," + str(int(orderQuantity)) + "\n"
     orderHistory = open("OrderHistory.txt", "a")
     orderHistory.write(orderText)
     orderHistory.close()
@@ -60,10 +64,13 @@ def endDay():
         usedD1 = db.ingredients.getUsedD1(ingId)
         usedD2 = db.ingredients.getUsedD2(ingId)
         usedD3 = db.ingredients.getUsedD3(ingId)
-        newThreshold = (usedD1 + usedD2 + usedD3)/3
-        newAverage   = (usedD2 + usedD3)/2
+        newThreshold = int((usedD1 + usedD2 + usedD3)/3)
+        newAverage   = newThreshold * 2
         db.ingredients.setUsedD1(ingId, usedD2)
         db.ingredients.setUsedD2(ingId, usedD3)
         db.ingredients.setUsedD3(ingId, 0)
         db.persistentData.setValue(PersistentData.KEY_THRESHOLD, newThreshold)
         db.ingredients.setUsedAverage(ingId, newAverage)
+        curDate = db.persistentData.getValue(PersistentData.KEY_CUR_DATE)
+        newDate = db.getDateNext(curDate, 1)
+        db.persistentData.setValue(PersistentData.KEY_CUR_DATE, newDate)
