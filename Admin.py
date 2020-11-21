@@ -40,7 +40,7 @@ def addIngredientQuantity(ingId, qty):
     db.ingredients.setStock(ingId, stock + qty)
 
 def addMonthExpense(amt):
-    curAmt = db.persistentData.getValue(PersistentData.KEY_MONTH_EXPEN)
+    curAmt = float(db.persistentData.getValue(PersistentData.KEY_MONTH_EXPEN))
     db.persistentData.setValue(PersistentData.KEY_MONTH_EXPEN, curAmt + amt)
 
 def getMonthExpense():
