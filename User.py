@@ -56,19 +56,17 @@ def orderIngredient(ingId, orderQuantity):
 
 def endDay():
     for ingId in db.ingredients.getAllId():
-        if db.ingredients.getStock(ingId) < float(db.persistentData.getValue(PersistentData.KEY_THRESHOLD)):
-            orderIngredient(ingId, db.ingredients.getUsedAverage(ingId))
+        if db.ingredients.getStock(ingId) < int(db.ingredients.getUsedAverage(ingId)):
+            orderIngredient(ingId, db.ingredients.getUsedAverage(ingId)*2)
 
         usedD1 = db.ingredients.getUsedD1(ingId)
         usedD2 = db.ingredients.getUsedD2(ingId)
         usedD3 = db.ingredients.getUsedD3(ingId)
-        newThreshold = int((usedD1 + usedD2 + usedD3)/3)
-        newAverage   = newThreshold * 2
+        newAverage = int((usedD1 + usedD2 + usedD3)/3)
 
         db.ingredients.setUsedD1(ingId, usedD2)
         db.ingredients.setUsedD2(ingId, usedD3)
         db.ingredients.setUsedD3(ingId, 0)
-        db.persistentData.setValue(PersistentData.KEY_THRESHOLD, newThreshold)
         db.ingredients.setUsedAverage(ingId, newAverage)
 
     curDate = db.persistentData.getValue(PersistentData.KEY_CUR_DATE)
