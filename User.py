@@ -16,25 +16,20 @@ def checkAvailability(dishId, dishQuantity):
 
 def deductIngredients(dishId, dishQuantity):
     consumedIngredientIds = db.dishIngredients.getIngredientIds(dishId)
-    if isinstance(consumedIngredientIds, int):
-            ingId = consumedIngredientIds
-            consumedStock = db.dishIngredients.getQuantity(dishId, ingId) * dishQuantity
-            newStock      = db.ingredients.getStock(ingId) - consumedStock
-            db.ingredients.setStock(ingId, newStock)
-            db.ingredients.setUsedD3(ingId, db.ingredients.getUsedD3(ingId) + consumedStock)
-    else:
-        for ingId in consumedIngredientIds:
-            consumedStock = db.dishIngredients.getQuantity(dishId, ingId) * dishQuantity
-            newStock      = db.ingredients.getStock(ingId) - consumedStock
-            db.ingredients.setStock(ingId, newStock)
-            db.ingredients.setUsedD3(ingId, db.ingredients.getUsedD3(ingId) + consumedStock)
+    if not type(consumedIngredientIds) is list:
+        consumedIngredientIds = [consumedIngredientIds]
+    for ingId in consumedIngredientIds:
+        consumedStock = db.dishIngredients.getQuantity(dishId, ingId) * dishQuantity
+        newStock      = db.ingredients.getStock(ingId) - consumedStock
+        db.ingredients.setStock(ingId, newStock)
+        db.ingredients.setUsedD3(ingId, db.ingredients.getUsedD3(ingId) + consumedStock)
 
 def generateBill(inputList):
     billText = ""
     total = 0
     for dishId in inputList:
         deductIngredients(dishId, inputList[dishId])
-        priceDish = db.ingredients.getPrice(dishId) * inputList[dishId]
+        priceDish = db.dishes.getPrice(dishId) * inputList[dishId]
         total     = total + priceDish
         billText = billText + db.dishes.getName(dishId) + " : " + str(int(inputList[dishId])) + " : " + str(priceDish) + "\n"
     billText = billText + "------------------------------\nTotal : " + str(total) + "\n"

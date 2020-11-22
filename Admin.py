@@ -60,6 +60,10 @@ def getMonthDishSales():
         for billId in billIds:
             dishIds  = db.billDishes.getDishIds(billId)
             dishQtys = db.billDishes.getDishQtys(billId)
+            if not type(dishIds) is list:
+                dishIds = [dishIds]
+            if not type(dishQtys) is list:
+                dishQtys = [dishQtys]
             for i in range(len(dishIds)):
                 allDishSales[dishIds[i]] += dishQtys[i]
     return allDishSales

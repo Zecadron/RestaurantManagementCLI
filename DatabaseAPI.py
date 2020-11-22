@@ -219,7 +219,7 @@ class BillDishes:
 
     def getDishQtys(self, billId):
         return self.db.select(TAB_BILL_DISHES,
-                Dishes.COL_QTY, (Bills.COL_ID,), (billId,))[billId]
+                self.COL_QTY, (Bills.COL_ID,), (billId,))[billId]
 
     def getQuantity(self, billId, dishId):
         return self.db.select(TAB_BILL_DISHES, self.COL_QTY,
