@@ -51,7 +51,7 @@ def orderIngredient(ingId, orderQuantity):
 
 def endDay():
     for ingId in db.ingredients.getAllId():
-        if db.ingredients.getStock(ingId) < int(db.ingredients.getUsedAverage(ingId)):
+        if db.ingredients.getStock(ingId) < int(db.ingredients.getUsedAverage(ingId)*2):
             orderIngredient(ingId, db.ingredients.getUsedAverage(ingId)*2)
 
         usedD1 = db.ingredients.getUsedD1(ingId)
