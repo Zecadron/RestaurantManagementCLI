@@ -31,8 +31,8 @@ def generateBill(inputList):
         deductIngredients(dishId, inputList[dishId])
         priceDish = db.dishes.getPrice(dishId) * inputList[dishId]
         total     = total + priceDish
-        billText = billText + db.dishes.getName(dishId) + " : " + str(int(inputList[dishId])) + " : " + str(priceDish) + "\n"
-    billText = billText + "------------------------------\nTotal : " + str(total) + "\n"
+        billText = billText + '{:20}'.format(db.dishes.getName(dishId)) + '{:20}'.format(str(int(inputList[dishId]))) +'{:20}'.format(str(priceDish)) + "\n"
+    billText = billText + "------------------------------------------------\nTotal : " + str(total) + "\n"
 
     billId = db.bills.addBill(db.persistentData.getValue(PersistentData.KEY_CUR_DATE), total)
     for dishId in inputList:
@@ -40,7 +40,7 @@ def generateBill(inputList):
 
     currentCash = float(db.persistentData.getValue(PersistentData.KEY_CASH))
     db.persistentData.setValue(PersistentData.KEY_CASH, currentCash + total)
-    billText = "Dish Name : Quantity : Price\n" + billText
+    billText = "\n" + '{:20}'.format("Dish Name") + '{:20}'.format("Quantity") + '{:20}'.format("Price") + "\n" + billText
     return billText
 
 def orderIngredient(ingId, orderQuantity):

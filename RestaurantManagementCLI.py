@@ -1,5 +1,8 @@
 import User
 import Admin
+from time import sleep
+from os import system, name
+
 
 def doAddNewIngredient():
     name = input("Enter Ingredient Name: ")
@@ -15,7 +18,7 @@ def doUpdateIngredientPrice():
     print("Updated Ingredient Price")
 
 def doPrintIngredientList():
-    print(Admin.getIngredientList())
+    dictPrint(Admin.getIngredientList())
 
 def doAddNewDish():
     name = input("Enter Dish Name: ")
@@ -47,7 +50,7 @@ def doUpdateDishPrice():
     print("Updated Dish Price")
 
 def doPrintDishMenu():
-    print(Admin.getDishMenu())
+    listPrint(Admin.getDishMenu())
 
 def doExportBillData():
     Admin.exportBillData()
@@ -108,7 +111,8 @@ def doPrintMonthlyStats():
 
 def adminMenu():
     while True:
-        print("\n=================================================")
+
+        print("===================== ADMIN =====================")
         print("1.  Add New Ingredient")
         print("2.  Update Ingredient Price")
         print("3.  Print Ingredient List")
@@ -125,54 +129,131 @@ def adminMenu():
 
         choice = int(input("Enter Choice (0 to go back): "))
         if choice == 1:
+            bannerDisplay(0)
+            menuBar("a")
+            print("Add New Ingredient\n")
             doAddNewIngredient()
+            bannerDisplay(0)
+
         elif choice == 2:
+            bannerDisplay(0)
+            menuBar("a")
+            print("Update Ingredient Price\n")
             doUpdateIngredientPrice()
+            bannerDisplay(0)
+
         elif choice == 3:
+            bannerDisplay(0)
+            menuBar("a")
+            print("Print Ingredient List\n")
             doPrintIngredientList()
+            bannerDisplay(1)
+
         elif choice == 4:
+            bannerDisplay(0)
+            menuBar("a")
+            print("Add new Dish\n")
             doAddNewDish()
+            bannerDisplay(0)
+
         elif choice == 5:
+            bannerDisplay(0)
+            menuBar("a")
+            print("Update Dish Ingredients\n")
             doUpdateDishIngredients()
+            bannerDisplay(0)
+
         elif choice == 6:
+            bannerDisplay(0)
+            menuBar("a")
+            print("Update Dish Price\n")
             doUpdateDishPrice()
+            bannerDisplay(0)
+
         elif choice == 7:
+            bannerDisplay(0)
+            menuBar("a")
+            print("Print Dish Menu\n")
             doPrintDishMenu()
+            bannerDisplay(1)
+
         elif choice == 8:
+            bannerDisplay(0)
+            menuBar("a")
+            print("Export Bill Data\n")
             doExportBillData()
+            bannerDisplay(1)
+
         elif choice == 9:
+            bannerDisplay(0)
+            menuBar("a")
+            print("Generate Ingredient Order Invoice \n")
             doGenIngOrderInvoice()
+            bannerDisplay(1)
+
         elif choice == 10:
+            bannerDisplay(0)
+            menuBar("a")
+            print("Show Available Cash\n")
             doGetCash()
+            bannerDisplay(1)
+
         elif choice == 11:
+            bannerDisplay(0)
+            menuBar("a")
+            print("Deposit Cash\n")
             doDepositCash()
+            bannerDisplay(0)
+
         elif choice == 12:
+            bannerDisplay(0)
+            menuBar("a")
+            print("Withdraw Cash\n")
             doWithdrawCash()
+            bannerDisplay(0)
+
         elif choice == 13:
+            bannerDisplay(0)
+            menuBar("a")
+            print("Print Monthly Statistics\n")
             doPrintMonthlyStats()
+            bannerDisplay(1)
+
         elif choice == 0:
+            bannerDisplay(0)
             break
         else:
+            bannerDisplay(0)
             print("(!)Invalid Choice")
+            bannerDisplay(1)
 
 def userMenu():
     inputList = dict()
     while True:
-        print("\n=================================================")
+
+        print("===================== USER ======================")
         print("1. Add Bill Item")
         print("2. Process Bill")
         print("3. End Day and Save")
         choice = int(input("Enter Choice (0 to go back): "))
 
         if choice == 1:
+            bannerDisplay(0)
+            menuBar("u")
+            print("Add Bill Item\n")
             dishId       = int(input("Enter Dish ID: "))
             dishQuantity = int(input("Enter Dish Qty: "))
             if User.checkAvailability(dishId, dishQuantity) == True:
                 inputList[dishId] = dishQuantity
+                bannerDisplay(0)
             else:
                 print("(!)Insufficient ingredients")
+                bannerDisplay(1)
 
         elif choice == 2:
+            bannerDisplay(0)
+            menuBar("u")
+            print("Process Bill\n")
             print(inputList)
             confirmBill = input("Confirm? (y/n): ")
             if confirmBill == "y" or confirmBill == "Y":
@@ -184,35 +265,78 @@ def userMenu():
                 inputList.clear()
                 print("Deleted current bill")
             print("Bill succesfully processed")
+            bannerDisplay(1)
 
         elif choice == 3:
+            bannerDisplay(0)
+            menuBar("u")
+            print("End Day and Save\n")
             dayEndChoice = input("Are you sure? (y/n): ")
             if dayEndChoice == "y" or dayEndChoice == "Y":
                 User.endDay()
+            bannerDisplay(0)
 
         elif choice == 0:
+            bannerDisplay(0)
             break
 
         else:
+            bannerDisplay(1)
             print("(!)Invalid Choice")
+
+def dictPrint(dictObject):
+    for i in dictObject:
+        print(str(i) + " " + dictObject[i])
+def listPrint(listObject):
+    for i in listObject:
+        temp = ""
+        for j in i:
+            temp += '{:20}'.format(str(j)+" ")
+        print(temp)
+
+def menuBar(choice):
+    if choice == "-":
+        print("=================================================")
+    if choice == "u":
+        print("===================== USER ======================")
+    if choice == "a":
+        print("===================== ADMIN =====================")
+
+def clear(choice):
+    if choice == 1:
+        temp = input("\n\nPress Enter to Continue")
+
+    if name == "nt":
+        _ = system("cls")
+    else:
+        _ = system("clear")
+
+def bannerDisplay(choice):
+    clear(choice)
+    print("\nDate: " + Admin.getCurDate())
+    print("=================================================")
+    print("####### Restaurant Management System v0.1 #######\n\n")
 
 def main():
     Admin.initPersistentData()
-
     while True:
-        print("\nDate: " + Admin.getCurDate())
-        print("=================================================")
-        print("Restaurant Management System v0.1")
-        print("=================================================")
+        bannerDisplay(0)
+        print("===================== Menu ======================")
+        print("Choose User: ")
         print("1. Admin")
         print("2. User")
 
-        choice = int(input("Enter Choice (0 to exit): "))
+        choice = int(input("Enter choice(0 to Exit): "))
         if choice == 1:
+            bannerDisplay(0)
             adminMenu()
         elif choice == 2:
+            bannerDisplay(0)
             userMenu()
+
         elif choice == 0:
+            print("\n******************* Thank You *******************\n")
+            sleep(2)
             exit()
         else:
             print("(!)Invalid Choice")
