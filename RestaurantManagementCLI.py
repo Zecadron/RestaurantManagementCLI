@@ -211,7 +211,7 @@ def adminMenu():
             menuBar("a")
             print("Withdraw Cash\n")
             doWithdrawCash()
-            bannerDisplay(0)
+            bannerDisplay(1)
 
         elif choice == 13:
             bannerDisplay(0)
@@ -282,8 +282,9 @@ def userMenu():
             break
 
         else:
-            bannerDisplay(1)
+            bannerDisplay(0)
             print("(!) Invalid Choice")
+            bannerDisplay(1)
 
 def dictPrint(dictObject):
     for i in dictObject:
@@ -354,6 +355,10 @@ def main():
         except LookupError:
             bannerDisplay(0)
             print("(!) Lookup Error Occured: Please check your input")
+            bannerDisplay(1)
+        except ArithmeticError:
+            bannerDisplay(0)
+            print("(!) Arithmetic Occured: Please check your input")
             bannerDisplay(1)
         except KeyboardInterrupt:
             bannerDisplay(0)

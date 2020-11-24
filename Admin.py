@@ -52,7 +52,7 @@ class Admin:
         allDishSales = dict()
         for dishId in db.dishes.getNamesByIds():
             allDishSales[dishId] = 0
-        yearMonthStr = getCurDate()[:-2]
+        yearMonthStr = Admin.getCurDate()[:-2]
         for i in range(1,32):
             dayStr = ('0' + str(i)) if i < 10 else str(i)
             dateStr = yearMonthStr + dayStr

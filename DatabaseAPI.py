@@ -172,7 +172,7 @@ class Bills:
         values = [COL_AUTO, billDate, totalAmt]
         self.db.insert(TAB_BILLS, values)
         billIds = self.db.select(TAB_BILLS, self.COL_ID, (self.COL_ID,))
-        return billIds[len(billIds)]
+        return len(billIds)
 
 class DishIngredients:
     COL_QTY     = "Quantity"

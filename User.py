@@ -29,7 +29,7 @@ class User:
         billText = ""
         total = 0
         for dishId in inputList:
-            deductIngredients(dishId, inputList[dishId])
+            User.deductIngredients(dishId, inputList[dishId])
             priceDish = db.dishes.getPrice(dishId) * inputList[dishId]
             total     = total + priceDish
             billText = billText + '{:20}'.format(db.dishes.getName(dishId)) + '{:20}'.format(str(int(inputList[dishId]))) +'{:20}'.format(str(priceDish)) + "\n"
