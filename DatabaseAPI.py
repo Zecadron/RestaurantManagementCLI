@@ -152,6 +152,9 @@ class Bills:
     def __init__(self, db):
         self.db = db
 
+    def getAllId(self):
+        return self.db.select(TAB_BILLS, self.COL_ID, (self.COL_ID,))
+
     def getDate(self, billId):
         return self.db.select(TAB_BILLS,
                 self.COL_DATE, (self.COL_ID,), (billId,))[billId]

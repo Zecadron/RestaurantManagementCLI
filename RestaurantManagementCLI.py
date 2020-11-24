@@ -1,8 +1,7 @@
-import User
-import Admin
+from Admin import *
+from User import *
 from time import sleep
 from os import system, name
-
 
 def doAddNewIngredient():
     name = input("Enter Ingredient Name: ")
@@ -53,7 +52,9 @@ def doPrintDishMenu():
     listPrint(Admin.getDishMenu())
 
 def doExportBillData():
-    Admin.exportBillData()
+    fname = "BillData.txt"
+    Admin.exportBillData(fname)
+    print("Bill data exported to: " + fname)
 
 def doGenIngOrderInvoice():
     n = int(input("Enter new no. of Ingredients: "))
@@ -70,8 +71,8 @@ def doGenIngOrderInvoice():
         Admin.withdrawCash(amt)
         doGetCash()
     else:
-        print("(!)Insufficient Cash")
-        print("(!)Please write cheque manually")
+        print("(!) Insufficient Cash")
+        print("(!) Please write cheque manually")
 
 def doWithdrawCash():
     cash = float(input("Enter Amount to Withdraw: "))
@@ -80,7 +81,7 @@ def doWithdrawCash():
         print("Succesfully withdrawn Rs. " + str(cash))
         doGetCash()
     else:
-        print("(!)Insufficient Cash")
+        print("(!) Insufficient Cash")
 
 def doDepositCash():
     cash = float(input("Enter Amount to Deposit: "))
@@ -133,14 +134,14 @@ def adminMenu():
             menuBar("a")
             print("Add New Ingredient\n")
             doAddNewIngredient()
-            bannerDisplay(0)
+            bannerDisplay(1)
 
         elif choice == 2:
             bannerDisplay(0)
             menuBar("a")
             print("Update Ingredient Price\n")
             doUpdateIngredientPrice()
-            bannerDisplay(0)
+            bannerDisplay(1)
 
         elif choice == 3:
             bannerDisplay(0)
@@ -154,21 +155,21 @@ def adminMenu():
             menuBar("a")
             print("Add new Dish\n")
             doAddNewDish()
-            bannerDisplay(0)
+            bannerDisplay(1)
 
         elif choice == 5:
             bannerDisplay(0)
             menuBar("a")
             print("Update Dish Ingredients\n")
             doUpdateDishIngredients()
-            bannerDisplay(0)
+            bannerDisplay(1)
 
         elif choice == 6:
             bannerDisplay(0)
             menuBar("a")
             print("Update Dish Price\n")
             doUpdateDishPrice()
-            bannerDisplay(0)
+            bannerDisplay(1)
 
         elif choice == 7:
             bannerDisplay(0)
@@ -203,7 +204,7 @@ def adminMenu():
             menuBar("a")
             print("Deposit Cash\n")
             doDepositCash()
-            bannerDisplay(0)
+            bannerDisplay(1)
 
         elif choice == 12:
             bannerDisplay(0)
@@ -224,7 +225,7 @@ def adminMenu():
             break
         else:
             bannerDisplay(0)
-            print("(!)Invalid Choice")
+            print("(!) Invalid Choice")
             bannerDisplay(1)
 
 def userMenu():
@@ -247,7 +248,7 @@ def userMenu():
                 inputList[dishId] = dishQuantity
                 bannerDisplay(0)
             else:
-                print("(!)Insufficient ingredients")
+                print("(!) Insufficient ingredients")
                 bannerDisplay(1)
 
         elif choice == 2:
@@ -282,7 +283,7 @@ def userMenu():
 
         else:
             bannerDisplay(1)
-            print("(!)Invalid Choice")
+            print("(!) Invalid Choice")
 
 def dictPrint(dictObject):
     for i in dictObject:
@@ -315,31 +316,49 @@ def bannerDisplay(choice):
     clear(choice)
     print("\nDate: " + Admin.getCurDate())
     print("=================================================")
-    print("####### Restaurant Management System v0.1 #######\n\n")
+    print("####### Restaurant Management System v1.0 #######\n\n")
 
 def main():
     Admin.initPersistentData()
     while True:
         bannerDisplay(0)
+        print("(+) Press CTRL+C anywhere to return to main menu\n")
         print("===================== Menu ======================")
-        print("Choose User: ")
+        print("Choose Operator: ")
         print("1. Admin")
         print("2. User")
 
-        choice = int(input("Enter choice(0 to Exit): "))
-        if choice == 1:
-            bannerDisplay(0)
-            adminMenu()
-        elif choice == 2:
-            bannerDisplay(0)
-            userMenu()
+        try:
+            choice = int(input("Enter choice(0 to Exit): "))
+            if choice == 1:
+                bannerDisplay(0)
+                adminMenu()
+            elif choice == 2:
+                bannerDisplay(0)
+                userMenu()
 
-        elif choice == 0:
-            print("\n******************* Thank You *******************\n")
-            sleep(2)
-            exit()
-        else:
-            print("(!)Invalid Choice")
+            elif choice == 0:
+                print("\nExiting...\n")
+                sleep(1)
+                clear(0)
+                exit()
+            else:
+                bannerDisplay(0)
+                print("(!) Invalid Choice")
+                bannerDisplay(1)
+
+        except ValueError:
+            bannerDisplay(0)
+            print("(!) Invalid Input")
+            bannerDisplay(1)
+        except LookupError:
+            bannerDisplay(0)
+            print("(!) Lookup Error Occured: Please check your input")
+            bannerDisplay(1)
+        except KeyboardInterrupt:
+            bannerDisplay(0)
+        except Exception:
+            raise
 
 if __name__ == "__main__":
     main()
