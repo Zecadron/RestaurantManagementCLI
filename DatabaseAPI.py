@@ -169,10 +169,8 @@ class Bills:
         return idDict[billDate] if idDict else []
 
     def addBill(self, billDate, totalAmt):
-        values = [COL_AUTO, billDate, totalAmt]
-        self.db.insert(TAB_BILLS, values)
-        billIds = self.db.select(TAB_BILLS, self.COL_ID, (self.COL_ID,))
-        return len(billIds)
+        values = (COL_AUTO, billDate, totalAmt)
+        return self.db.insert(TAB_BILLS, values)
 
 class DishIngredients:
     COL_QTY     = "Quantity"

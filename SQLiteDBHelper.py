@@ -54,8 +54,9 @@ class SQLiteDBHelper:
         else:
             cmd = "insert into " + tableName + \
                     " values (?" + ",?"*(len(values)-1) + ");"
-        self.conn.execute(cmd, values)
+        cur = self.conn.execute(cmd, values)
         self.conn.commit()
+        return cur.lastrowid
 
     def update(self, tableName, selColumn, value, whereColumn, whereVal):
         cmd = "update " + tableName + " set {}=? where {}=?;" 
